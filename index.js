@@ -1,60 +1,70 @@
-const express = require('express');
-const app = express();
+// queries.js
+const db = require('./db'); // import the connection from db.js
 
-// Middleware 
-app.use(express.json());
+// ✅ Function: Get all users
+function getAllUsers() {
+  db.query('SELECT * FROM users', (err, results) => {
+    if (err) {
+      console.error('❌ Error fetching users:', err);
+      return;
+    }
+    console.log('📌 Users table:');
+    console.log(results);
+  });
+}
 
-//employees
+// ✅ Function: Get all products
+function getAllProducts() {
+  db.query('SELECT * FROM products', (err, results) => {
+    if (err) {
+      console.error('❌ Error fetching products:', err);
+      return;
+    }
+    console.log('📌 Products table:');
+    console.log(results);
+  });
+}
 
-// GET employees
-app.get('/employees', (req, res) => {
-  res.json({ message: 'This is the GET employees path' });
-});
+// ✅ Function: Delete a product by product_name
+function deleteProduct(productName) {
+  const sql = 'DELETE FROM products WHERE product_name = ?';
+  db.query(sql, [productName], (err, result) => {
+    if (err) {
+      console.error('❌ Error deleting product:', err);
+      return;
+    }
+    console.log(`🗑️ Deleted ${result.affectedRows} product(s) with name: ${productName}`);
+  });
+}
 
-// POST employees
-app.post('/employees', (req, res) => {
-  // Normally you'd handle adding a new employee here
-  res.json({ message: 'This is the POST employees path - new employee added' });
-});
+// ✅ Function: Insert a new product
+function insertProduct(code, name, price, quantity) {
+  const sql = 'INSERT INTO products (product_code, product_name, product_price, product_quantity) VALUES (?, ?, ?, ?)';
+  db.query(sql, [code, name, price, quantity], (err, result) => {
+    if (err) {
+      console.error('❌ Error inserting product:', err);
+      return;
+    }
+    console.log(`✅ Product inserted: ${name}`);
+  });
+}
 
-// PATCH employees (update partial fields)
-app.patch('/employees/:id', (req, res) => {
-  // Normally you'd handle updating specific fields of employee here
-  res.json({ message: `This is the PATCH employees path - employee ${req.params.id} updated` });
-});
+// ✅ Function: Update an existing product
+function updateProduct(productName, newPrice, newQuantity) {
+  const sql = 'UPDATE products SET product_price = ?, product_quantity = ? WHERE product_name = ?';
+  db.query(sql, [newPrice, newQuantity, productName], (err, result) => {
+    if (err) {
+      console.error('❌ Error updating product:', err);
+      return;
+    }
+    console.log(`✏️ Updated ${result.affectedRows} product(s): ${productName}`);
+  });
+}
 
-// DELETE employees
-app.delete('/employees/:id', (req, res) => {
-  // Normally you'd handle deleting an employee here
-  res.json({ message: `This is the DELETE employees path - employee ${req.params.id} deleted` });
-});
+// testiing 
 
-
-//routes
-
-// GET managers
-app.get('/managers', (req, res) => {
-  res.json({ message: 'This is the GET managers path' });
-});
-
-// POST managers
-app.post('/managers', (req, res) => {
-  res.json({ message: 'This is the POST managers path - new manager added' });
-});
-
-// PATCH managers
-app.patch('/managers/:id', (req, res) => {
-  res.json({ message: `This is the PATCH managers path - manager ${req.params.id} updated` });
-});
-
-// DELETE managers
-app.delete('/managers/:id', (req, res) => {
-  res.json({ message: `This is the DELETE managers path - manager ${req.params.id} deleted` });
-});
-
-
-//server 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-});
+// getAllUsers();
+// getAllProducts();
+// deleteProduct('baro');
+// insertProduct('F001', 'Pizza', 120.50, 15);
+// updateProduct('Pizza', 150.00, 20);

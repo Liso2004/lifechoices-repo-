@@ -1,30 +1,50 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div id="app">
+    <nav class="navbar">
+      <div class="navbar-links">
+        <router-link to="/" class="nav-link">Landing</router-link>
+        <router-link to="/products" class="nav-link">Products</router-link>
+        <router-link to="/cart" class="nav-link">Cart</router-link>
+        <router-link to="/login" class="nav-link">Login</router-link>
+      </div>
+    </nav>
+    <router-view />
+  </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+export default {
+  name: 'App'
+};
+</script>
+
+<style scoped>
+.navbar {
+  display: flex; /* Flexbox for layout */
+  justify-content: space-between; /* Space between items */
+  align-items: center; /* Center items vertically */
+  background-color: #007bff; /* Blue background color */
+  padding: 15px 20px; /* Padding around the navbar */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
-nav {
-  padding: 30px;
+.navbar-links {
+  display: flex; /* Flexbox for links */
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.nav-link {
+  color: #fff; /* White text color */
+  text-decoration: none; /* Remove underline */
+  margin-right: 20px; /* Space between links */
+  font-size: 1.1rem; /* Font size for links */
+  transition: color 0.3s; /* Smooth transition for hover effect */
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+.nav-link:hover {
+  color: #e0e0e0; /* Light gray on hover */
+}
+
+.nav-link:last-child {
+  margin-right: 0; /* Remove margin from the last link */
 }
 </style>
